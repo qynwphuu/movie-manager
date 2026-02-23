@@ -23,7 +23,8 @@ class MovieRepositoryTest {
 
     @BeforeEach
     void setup() {
-        movieRepository.deleteAll(); // reset DB
+        // reset DB before each test
+        movieRepository.deleteAll();
         genreRepository.deleteAll();
 
         // create genres
@@ -57,6 +58,16 @@ class MovieRepositoryTest {
         movieRepository.save(movie); // save update
         Movie updatedMovie = movieRepository.findById(movie.getId()).orElseThrow();
         assertEquals(9.5, updatedMovie.getRating());
+    }
+
+    @Test
+    void testFindAllMovies() {
+        Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
+        Movie movie1 = new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true);
+        Movie movie2 = new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false);
+        movieRepository.save(movie1);
+        movieRepository.save(movie2);
+        assertEquals(2, movieRepository.findAll().size()); // check if there are 2 movies
     }
 
 }

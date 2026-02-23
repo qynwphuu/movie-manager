@@ -86,6 +86,7 @@ public class MovieController {
             return "edit-movie";
         }
         movie.setId(id); // make sure to set the ID for update
+
         // Look up the full Genre entity from the submitted genre ID
         if (movie.getGenre() != null && movie.getGenre().getId() != null) {
             Genre genre = genreRepository.findById(movie.getGenre().getId())
