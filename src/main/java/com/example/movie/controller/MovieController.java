@@ -45,10 +45,11 @@ public class MovieController {
     // Add a new movie (POST)
     @PostMapping("/add")
     public String saveMovie(@Valid @ModelAttribute Movie movie, BindingResult result, Model model) {
+        // Check for validation errors
         if (result.hasErrors()) {
             model.addAttribute("genres", genreRepository.findAll());
             return "add-movie";
-        } // check for validation errors
+        }
 
         // Look up the full Genre entity from the submitted genre ID
         if (movie.getGenre() != null && movie.getGenre().getId() != null) {
