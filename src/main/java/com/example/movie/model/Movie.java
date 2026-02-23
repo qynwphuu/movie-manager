@@ -6,7 +6,6 @@ import jakarta.validation.constraints.*;
 // table
 @Entity
 public class Movie {
-
     // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,12 +13,18 @@ public class Movie {
 
     @NotBlank(message = "Title is required")
     private String title;
+
     @NotBlank(message = "Director is required")
     private String director;
+
     @Min(value = 1900, message = "Release year must be at least 1900")
     private int releaseYear;
-    @NotBlank(message = "Genre is required")
-    private String genre;
+
+    @NotNull(message = "Genre is required")
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
+
     @DecimalMin(value = "0.0", message = "Rating must be >= 0")
     @DecimalMax(value = "10.0", message = "Rating must be <= 10")
     private double rating;
@@ -31,7 +36,7 @@ public class Movie {
     }
 
     // constructors
-    public Movie(String title, String director, int releaseYear, String genre, double rating, boolean watched) {
+    public Movie(String title, String director, int releaseYear, Genre genre, double rating, boolean watched) {
         this.title = title;
         this.director = director;
         this.releaseYear = releaseYear;
@@ -73,11 +78,11 @@ public class Movie {
         this.releaseYear = releaseYear;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 
