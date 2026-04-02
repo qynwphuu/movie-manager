@@ -2,6 +2,7 @@ package com.example.movie.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Genre {
@@ -11,6 +12,7 @@ public class Genre {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
     private List<Movie> movies;
 

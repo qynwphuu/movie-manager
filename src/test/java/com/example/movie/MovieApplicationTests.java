@@ -2,6 +2,7 @@ package com.example.movie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import com.example.movie.repository.MovieRepository;
 import com.example.movie.repository.GenreRepository;
 
 @SpringBootTest
-class MovieRepositoryTest {
+class MovieApplicationTests {
 
     @Autowired
     private MovieRepository movieRepository; // JpaRepository
@@ -21,8 +22,14 @@ class MovieRepositoryTest {
     @Autowired
     private GenreRepository genreRepository;
 
+    @Test
+    public void contextLoads() throws Exception {
+        assertThat(movieRepository).isNotNull();
+        assertThat(genreRepository).isNotNull();
+    }
+
     @BeforeEach
-    void setup() {
+    public void setup() throws Exception {
         // reset DB before each test
         movieRepository.deleteAll();
         genreRepository.deleteAll();
@@ -33,7 +40,7 @@ class MovieRepositoryTest {
     }
 
     @Test
-    void testAddMovie() {
+    public void testAddMovie() throws Exception {
         Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
         Movie movie = new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true);
         movieRepository.save(movie); // save
@@ -41,7 +48,7 @@ class MovieRepositoryTest {
     }
 
     @Test
-    void testDeleteMovie() {
+    public void testDeleteMovie() throws Exception {
         Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
         Movie movie = new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false);
         movieRepository.save(movie);
@@ -50,7 +57,7 @@ class MovieRepositoryTest {
     }
 
     @Test
-    void testUpdateMovie() {
+    public void testUpdateMovie() throws Exception {
         Genre action = genreRepository.findByName("Action").orElseThrow();
         Movie movie = new Movie("The Dark Knight", "Nolan", 2008, action, 9.0, true);
         movieRepository.save(movie);
@@ -61,7 +68,7 @@ class MovieRepositoryTest {
     }
 
     @Test
-    void testFindAllMovies() {
+    public void testFindAllMovies() throws Exception {
         Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
         Movie movie1 = new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true);
         Movie movie2 = new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false);
