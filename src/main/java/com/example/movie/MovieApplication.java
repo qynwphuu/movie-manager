@@ -23,16 +23,22 @@ public class MovieApplication {
 	CommandLineRunner initData(GenreRepository genreRepository, MovieRepository movieRepository) {
 		return args -> {
 			// Preload genres first
-			Genre action = genreRepository.save(new Genre("Action"));
-			Genre comedy = genreRepository.save(new Genre("Comedy"));
-			Genre drama = genreRepository.save(new Genre("Drama"));
-			Genre horror = genreRepository.save(new Genre("Horror"));
-			Genre sciFi = genreRepository.save(new Genre("Sci-Fi"));
+			Genre action = genreRepository.findByName("Action")
+					.orElseGet(() -> genreRepository.save(new Genre("Action")));
+			Genre comedy = genreRepository.findByName("Comedy")
+					.orElseGet(() -> genreRepository.save(new Genre("Comedy")));
+			Genre drama = genreRepository.findByName("Drama").orElseGet(() -> genreRepository.save(new Genre("Drama")));
+			Genre horror = genreRepository.findByName("Horror")
+					.orElseGet(() -> genreRepository.save(new Genre("Horror")));
+			Genre sciFi = genreRepository.findByName("Sci-Fi")
+					.orElseGet(() -> genreRepository.save(new Genre("Sci-Fi")));
 
 			// Then save sample movies
-			movieRepository.save(new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true));
-			movieRepository.save(new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false));
-			movieRepository.save(new Movie("Die Hard", "McTiernan", 1988, action, 8.7, true));
+			if (movieRepository.count() == 0) {
+				movieRepository.save(new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true));
+				movieRepository.save(new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false));
+				movieRepository.save(new Movie("Die Hard", "McTiernan", 1988, action, 8.7, true));
+			}
 		};
 	}
 
@@ -45,8 +51,12 @@ public class MovieApplication {
 			User user2 = new User("admin", "admin@example.com",
 					"$2a$12$loeJmqaj30YeodKSDhiAHuGfBRhGuIouZPUvg0IjxHKnP765KArTa", "ADMIN");
 			// pass is "admin"
-			repository.save(user1);
-			repository.save(user2);
+			if (repository.findByUsername("user") == null) {
+				repository.save(user1);
+			}
+			if (repository.findByUsername("admin") == null) {
+				repository.save(user2);
+			}
 		};
 	}
 
