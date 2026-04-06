@@ -8,4 +8,4 @@ A REST API is also provided for accessing movie data in JSON format, enabling in
 
 The project is deployed online and can be accessed via a public URL.
 
-**Live Demo:** [Movie Manager Online](https://movie-manager-production.up.railway.app/)
+**Live Demo:** [Movie Manager Online](https://movie-manager-production.up.railway.app/login)
