@@ -5,7 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.movie.model.Genre;
 import com.example.movie.model.Movie;
@@ -29,6 +32,7 @@ public class MovieApplication {
 			mergeDuplicateGenres(genreRepository, movieRepository, "Drama");
 			mergeDuplicateGenres(genreRepository, movieRepository, "Horror");
 			mergeDuplicateGenres(genreRepository, movieRepository, "Sci-Fi");
+			mergeDuplicateMovies(movieRepository);
 
 			// Preload genres first
 			Genre action = genreRepository.findFirstByNameOrderByIdAsc("Action")
@@ -49,6 +53,28 @@ public class MovieApplication {
 				movieRepository.save(new Movie("Die Hard", "McTiernan", 1988, action, 8.7, true));
 			}
 		};
+	}
+
+	private void mergeDuplicateMovies(MovieRepository movieRepository) {
+		List<Movie> allMovies = movieRepository.findAll();
+		Map<String, Movie> uniqueMovies = new LinkedHashMap<>();
+		List<Movie> duplicates = new ArrayList<>();
+
+		for (Movie movie : allMovies) {
+			String genreName = movie.getGenre() != null ? movie.getGenre().getName() : "";
+			String key = movie.getTitle() + "|" + movie.getDirector() + "|" + movie.getReleaseYear() + "|"
+					+ genreName + "|" + movie.getRating() + "|" + movie.isWatched();
+
+			if (uniqueMovies.containsKey(key)) {
+				duplicates.add(movie);
+			} else {
+				uniqueMovies.put(key, movie);
+			}
+		}
+
+		if (!duplicates.isEmpty()) {
+			movieRepository.deleteAll(duplicates);
+		}
 	}
 
 	private void mergeDuplicateGenres(GenreRepository genreRepository, MovieRepository movieRepository,
