@@ -41,7 +41,7 @@ class MovieApplicationTests {
 
     @Test
     public void testAddMovie() throws Exception {
-        Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
+        Genre sciFi = genreRepository.findFirstByNameOrderByIdAsc("Sci-Fi").orElseThrow();
         Movie movie = new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true);
         movieRepository.save(movie); // save
         assertEquals(1, movieRepository.findAll().size()); // check if there is 1 movie
@@ -49,7 +49,7 @@ class MovieApplicationTests {
 
     @Test
     public void testDeleteMovie() throws Exception {
-        Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
+        Genre sciFi = genreRepository.findFirstByNameOrderByIdAsc("Sci-Fi").orElseThrow();
         Movie movie = new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false);
         movieRepository.save(movie);
         movieRepository.delete(movie); // delete
@@ -58,7 +58,7 @@ class MovieApplicationTests {
 
     @Test
     public void testUpdateMovie() throws Exception {
-        Genre action = genreRepository.findByName("Action").orElseThrow();
+        Genre action = genreRepository.findFirstByNameOrderByIdAsc("Action").orElseThrow();
         Movie movie = new Movie("The Dark Knight", "Nolan", 2008, action, 9.0, true);
         movieRepository.save(movie);
         movie.setRating(9.5); // update rating
@@ -69,7 +69,7 @@ class MovieApplicationTests {
 
     @Test
     public void testFindAllMovies() throws Exception {
-        Genre sciFi = genreRepository.findByName("Sci-Fi").orElseThrow();
+        Genre sciFi = genreRepository.findFirstByNameOrderByIdAsc("Sci-Fi").orElseThrow();
         Movie movie1 = new Movie("Inception", "Nolan", 2010, sciFi, 9.0, true);
         Movie movie2 = new Movie("Interstellar", "Nolan", 2014, sciFi, 8.5, false);
         movieRepository.save(movie1);

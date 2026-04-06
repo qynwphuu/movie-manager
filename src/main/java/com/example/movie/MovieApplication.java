@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 import com.example.movie.model.Genre;
 import com.example.movie.model.Movie;
 import com.example.movie.model.User;
@@ -22,15 +24,22 @@ public class MovieApplication {
 	@Bean
 	CommandLineRunner initData(GenreRepository genreRepository, MovieRepository movieRepository) {
 		return args -> {
+			mergeDuplicateGenres(genreRepository, movieRepository, "Action");
+			mergeDuplicateGenres(genreRepository, movieRepository, "Comedy");
+			mergeDuplicateGenres(genreRepository, movieRepository, "Drama");
+			mergeDuplicateGenres(genreRepository, movieRepository, "Horror");
+			mergeDuplicateGenres(genreRepository, movieRepository, "Sci-Fi");
+
 			// Preload genres first
-			Genre action = genreRepository.findByName("Action")
+			Genre action = genreRepository.findFirstByNameOrderByIdAsc("Action")
 					.orElseGet(() -> genreRepository.save(new Genre("Action")));
-			Genre comedy = genreRepository.findByName("Comedy")
+			Genre comedy = genreRepository.findFirstByNameOrderByIdAsc("Comedy")
 					.orElseGet(() -> genreRepository.save(new Genre("Comedy")));
-			Genre drama = genreRepository.findByName("Drama").orElseGet(() -> genreRepository.save(new Genre("Drama")));
-			Genre horror = genreRepository.findByName("Horror")
+			Genre drama = genreRepository.findFirstByNameOrderByIdAsc("Drama")
+					.orElseGet(() -> genreRepository.save(new Genre("Drama")));
+			Genre horror = genreRepository.findFirstByNameOrderByIdAsc("Horror")
 					.orElseGet(() -> genreRepository.save(new Genre("Horror")));
-			Genre sciFi = genreRepository.findByName("Sci-Fi")
+			Genre sciFi = genreRepository.findFirstByNameOrderByIdAsc("Sci-Fi")
 					.orElseGet(() -> genreRepository.save(new Genre("Sci-Fi")));
 
 			// Then save sample movies
@@ -40,6 +49,25 @@ public class MovieApplication {
 				movieRepository.save(new Movie("Die Hard", "McTiernan", 1988, action, 8.7, true));
 			}
 		};
+	}
+
+	private void mergeDuplicateGenres(GenreRepository genreRepository, MovieRepository movieRepository,
+			String genreName) {
+		List<Genre> matchingGenres = genreRepository.findAllByNameOrderByIdAsc(genreName);
+		if (matchingGenres.size() <= 1) {
+			return;
+		}
+
+		Genre keep = matchingGenres.get(0);
+		for (int i = 1; i < matchingGenres.size(); i++) {
+			Genre duplicate = matchingGenres.get(i);
+			List<Movie> moviesUsingDuplicate = movieRepository.findByGenre(duplicate);
+			for (Movie movie : moviesUsingDuplicate) {
+				movie.setGenre(keep);
+			}
+			movieRepository.saveAll(moviesUsingDuplicate);
+			genreRepository.delete(duplicate);
+		}
 	}
 
 	@Bean
