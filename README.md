@@ -7,3 +7,5 @@ The application uses Spring Data JPA with a PostgreSQL database and includes use
 A REST API is also provided for accessing movie data in JSON format, enabling integration with other tools or frontends.
 
 The project is deployed online and can be accessed via a public URL.
+
+**Live Demo:** [Movie Manager Online](https://movie-manager-production.up.railway.app/)
