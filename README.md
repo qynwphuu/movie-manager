@@ -8,4 +8,8 @@ A REST API is also provided for accessing movie data in JSON format, enabling in
 
 The project is deployed online and can be accessed via a public URL.
 
+## Deployment
+
+The application is deployed using Railway. The backend service and PostgreSQL database are hosted on Railway, and environment variables are used to configure the database connection and server port.
+
 **Live Demo:** [Movie Manager Online](https://movie-manager-production.up.railway.app/login)
