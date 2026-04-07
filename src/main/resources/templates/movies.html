@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <title>Movie List</title>
@@ -67,7 +67,7 @@
             <td th:text="${movie.watched}"></td>
             <td>
                 <a th:href="@{/movies/edit/{id}(id=${movie.id})}">Edit</a> |
-                <a th:href="@{/movies/delete/{id}(id=${movie.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/movies/delete/{id}(id=${movie.id})}" onclick="return confirm('Are you sure?')">Delete</a>
             </td>
         </tr>
     </table>

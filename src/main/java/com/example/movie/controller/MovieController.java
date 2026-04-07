@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,7 @@ public class MovieController {
 
     // Delete a movie
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteMovie(@PathVariable Long id) {
         movieRepository.deleteById(id);
         return "redirect:/movies";
@@ -70,6 +72,7 @@ public class MovieController {
 
     // Edit a movie (GET)
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public String showEditForm(@PathVariable Long id, Model model) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid movie Id:" + id));
@@ -80,6 +83,7 @@ public class MovieController {
 
     // Edit a movie (POST)
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public String editMovie(@PathVariable Long id, @Valid @ModelAttribute Movie movie, BindingResult result,
             Model model) {
         if (result.hasErrors()) {
