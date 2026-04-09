@@ -92,7 +92,7 @@ public class EmailService {
                 + "\"sender\":{\"name\":\"" + escapeJson(fromName) + "\",\"email\":\"" + escapeJson(fromAddress)
                 + "\"},"
                 + "\"to\":[{\"email\":\"" + escapeJson(to) + "\"}],"
-                + "\"subject\":\"" + escapeJson(subject) + "\"," 
+                + "\"subject\":\"" + escapeJson(subject) + "\","
                 + "\"textContent\":\"" + escapeJson(text) + "\""
                 + "}";
 
