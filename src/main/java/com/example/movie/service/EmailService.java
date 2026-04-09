@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class EmailService {
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     private final JavaMailSender mailSender;
     private final String baseUrl;
@@ -25,6 +28,7 @@ public class EmailService {
         String subject = "Password Reset";
         String normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
         String link = normalizedBaseUrl + "/reset-password?token=" + token;
+        logger.info("Preparing password reset email. to={}, from={}, resetUrl={}", to, fromAddress, normalizedBaseUrl);
 
         SimpleMailMessage message = new SimpleMailMessage();
         if (fromAddress == null || fromAddress.isBlank()) {
@@ -36,5 +40,6 @@ public class EmailService {
         message.setText("Click this link to reset your password:\n" + link);
 
         mailSender.send(message);
+        logger.info("Password reset email submitted to mail server for {}", to);
     }
 }
