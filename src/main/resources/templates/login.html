@@ -16,6 +16,9 @@
     <div th:if="${param.logout}" style="color: green;">
         You have been logged out.
     </div>
+    <div th:if="${param.registered}" style="color: green;">
+        Account created successfully. Please log in.
+    </div>
     <div th:if="${param.emailSent}" style="color: green;">
         If the email exists, a reset link has been sent.
     </div>
@@ -37,6 +40,8 @@
         </div>
 
         <a href="/forgot-password">Forgot password?</a>
+        <br>
+        <a href="/register">Create account</a>
     </form>
 </body>
 
