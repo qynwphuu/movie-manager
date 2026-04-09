@@ -1,5 +1,7 @@
 package com.example.movie.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +39,36 @@ public class User { // or AppUser
         this.role = role;
     }
 
+    // Fields for password reset
+    private String resetToken;
+    private LocalDateTime tokenExpiry;
+    private String Password;
+
     // Getters and setters
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getTokenExpiry() {
+        return tokenExpiry;
+    }
+
+    public void setTokenExpiry(LocalDateTime tokenExpiry) {
+        this.tokenExpiry = tokenExpiry;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
     public Long getId() {
         return id;
     }
