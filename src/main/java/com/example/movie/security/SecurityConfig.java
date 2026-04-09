@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login", "/forgot-password").permitAll()
                         .requestMatchers("/movies/delete/**").hasAuthority("ADMIN")
                         .requestMatchers("/movies/edit/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/movies/**").hasAuthority("ADMIN")

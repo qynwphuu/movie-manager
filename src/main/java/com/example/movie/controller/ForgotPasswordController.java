@@ -2,6 +2,7 @@ package com.example.movie.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ public class ForgotPasswordController {
 
     @Autowired
     private EmailService emailService;
+
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordForm() {
+        return "forgot-password";
+    }
 
     @PostMapping("/forgot-password")
     public String processForgotPassword(@RequestParam String email) {
