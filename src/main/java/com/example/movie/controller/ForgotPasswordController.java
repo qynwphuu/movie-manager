@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.mail.MailException;
 import com.example.movie.model.User;
 import com.example.movie.repository.UserRepository;
 import com.example.movie.service.EmailService;
@@ -27,7 +28,8 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgot-password")
     public String processForgotPassword(@RequestParam String email) {
-        User user = userRepository.findByEmail(email);
+        String normalizedEmail = email == null ? "" : email.trim();
+        User user = userRepository.findByEmailIgnoreCase(normalizedEmail);
 
         if (user != null) {
             String token = UUID.randomUUID().toString();
@@ -35,7 +37,11 @@ public class ForgotPasswordController {
             user.setTokenExpiry(LocalDateTime.now().plusMinutes(30));
             userRepository.save(user);
 
-            emailService.sendResetEmail(user.getEmail(), token);
+            try {
+                emailService.sendResetEmail(user.getEmail(), token);
+            } catch (MailException | IllegalStateException ex) {
+                return "redirect:/login?mailError";
+            }
         }
 
         return "redirect:/login?emailSent";

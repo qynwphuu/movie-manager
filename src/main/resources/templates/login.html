@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" href="/favicon.svg">
 </head>
 
 <body>
@@ -14,6 +15,12 @@
     </div>
     <div th:if="${param.logout}" style="color: green;">
         You have been logged out.
+    </div>
+    <div th:if="${param.emailSent}" style="color: green;">
+        If the email exists, a reset link has been sent.
+    </div>
+    <div th:if="${param.mailError}" style="color: red;">
+        Unable to send reset email right now. Please try again later.
     </div>
 
     <form th:action="@{/login}" method="post">

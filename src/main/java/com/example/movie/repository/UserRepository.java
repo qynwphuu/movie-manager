@@ -8,5 +8,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByEmail(String email);
 
+    User findByEmailIgnoreCase(String email);
+
     User findByResetToken(String resetToken);
 }
