@@ -18,7 +18,7 @@ public class EmailService {
     public EmailService(
             JavaMailSender mailSender,
             @Value("${app.base-url:https://movie-manager-production.up.railway.app}") String baseUrl,
-            @Value("${spring.mail.username:}") String fromAddress) {
+            @Value("${APP_MAIL_FROM:${spring.mail.username:}}") String fromAddress) {
         this.mailSender = mailSender;
         this.baseUrl = baseUrl;
         this.fromAddress = fromAddress;
@@ -32,7 +32,7 @@ public class EmailService {
 
         SimpleMailMessage message = new SimpleMailMessage();
         if (fromAddress == null || fromAddress.isBlank()) {
-            throw new IllegalStateException("Mail sender is not configured. Set MAIL_USERNAME.");
+            throw new IllegalStateException("Mail sender is not configured. Set APP_MAIL_FROM or MAIL_USERNAME.");
         }
         message.setFrom(fromAddress);
         message.setTo(to);
