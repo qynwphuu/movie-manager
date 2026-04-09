@@ -42,7 +42,6 @@ public class User { // or AppUser
     // Fields for password reset
     private String resetToken;
     private LocalDateTime tokenExpiry;
-    private String Password;
 
     // Getters and setters
     public String getResetToken() {
@@ -62,11 +61,11 @@ public class User { // or AppUser
     }
 
     public String getPassword() {
-        return Password;
+        return passwordHash;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.passwordHash = password;
     }
 
     public Long getId() {
