@@ -12,4 +12,8 @@ The project is deployed online and can be accessed via a public URL.
 
 The application is deployed using Railway. The backend service and PostgreSQL database are hosted on Railway, and environment variables are used to configure the database connection and server port.
 
-**Live Demo:** [Movie Manager Online](https://movie-manager-production.up.railway.app/login)
+**Live:** [Movie Manager Online](https://movie-manager-production.up.railway.app/login)
+
+## Reset Password
+
+Users can request a password reset by entering their email. A secure reset link is sent via email using Brevo API, allowing them to set a new password.
